@@ -18,7 +18,8 @@
     "firebase-admin": "^8.6.0",
     "firebase-functions": "^3.3.0",
     "pino": "^5.13.5",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "web-push": "^3.4.1"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.1.6"

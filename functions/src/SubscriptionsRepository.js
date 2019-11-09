@@ -16,6 +16,23 @@ const STATUS = {
 };
 
 class SubscriptionsRepository {
+  static async getPendingApproval(data) {
+    const subscriptionsRef = db.collection("subscriptions");
+    const queryRef = subscriptionsRef.doc(data.sub_id);
+    const item = await queryRef.get();
+
+    if (!item.exists) {
+      throw new Error(`Not found subscription id: ${data.sub_id}`);
+    }
+
+    const itemData = item.data();
+    if (itemData.nonce === data.nonce && itemData.status === STATUS.NEW) {
+      return itemData;
+    } else {
+      return null;
+    }
+  }
+
   static async reserveSubscription(token) {
     const id = uuid.v1();
     const nonce = uuid.v4();
