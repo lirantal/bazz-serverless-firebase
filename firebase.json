@@ -1,1 +1,11 @@
-{}
+{
+  "hosting": {
+    "rewrites": [
+      {
+        "source": "/api/tokens/**",
+        "function": "tokens"
+      }
+    ],
+    "public": "public"
+  }
+}
