@@ -16,6 +16,25 @@ const STATUS = {
 };
 
 class SubscriptionsRepository {
+  /**
+   * let a token confirm its subscription is ready to be used
+   * @param {*} subscription
+   */
+  static async confirmSubscription(subscription) {
+    const subscriptionRef = db.collection("subscriptions");
+    const queryRef = subscriptionRef.doc(subscription.id);
+
+    await queryRef.set(
+      {
+        status: STATUS.APPROVED,
+        updatedAt: new Date().toISOString()
+      },
+      { merge: true }
+    );
+
+    return true;
+  }
+
   static async getPendingApproval(data) {
     const subscriptionsRef = db.collection("subscriptions");
     const queryRef = subscriptionsRef.doc(data.sub_id);

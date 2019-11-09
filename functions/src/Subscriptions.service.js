@@ -48,6 +48,7 @@ class Subscriptions {
       throw new Error("Missing token, subscription id or nonce");
     }
 
+    Logger.log.info("Checking a pending approval subscription");
     Logger.log.debug(data);
 
     const subscriptionItem = await subscriptionsRepository.getPendingApproval(
@@ -95,6 +96,23 @@ class Subscriptions {
       createdAt: subscriptionItem.createdAt,
       updatedAt: subscriptionItem.updatedAt
     };
+  }
+
+  async confirmSubscription(data) {
+    const subscription = {
+      token: String(data.token),
+      sub_id: String(data.sub_id),
+      nonce: String(data.nonce)
+    };
+
+    const subscriptionItem = await this.getPendingApproval(subscription);
+    if (subscriptionItem.id && subscriptionItem.valid === true) {
+      await subscriptionsRepository.confirmSubscription(subscriptionItem);
+    } else {
+      throw new Error("Invalid confirmation request");
+    }
+
+    return true;
   }
 }
 
