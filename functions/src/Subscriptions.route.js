@@ -14,9 +14,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 
-/**
- * Semi-Signup - Creates a token for the user
- */
 app.get("/pending", async (req, res) => {
   try {
     const subscriptionsService = new SubscriptionsService();
