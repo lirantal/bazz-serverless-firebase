@@ -14,6 +14,30 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 
+app.get("/", async (req, res) => {
+  try {
+    const subscriptionsService = new SubscriptionsService();
+
+    let token = "";
+    token = req.get("authorization");
+    if (!token) {
+      throw HttpResponse.unauthorized("No token found");
+    }
+
+    const subscriptionItem = await subscriptionsService.getByToken(token);
+
+    const responseData = {
+      data: subscriptionItem
+    };
+
+    return res.status(200).json(responseData);
+  } catch (error) {
+    // @TODO error message
+    Logger.log.info(error);
+    return res.status(500).json(HttpResponse.badImplementation(error));
+  }
+});
+
 app.get("/pending", async (req, res) => {
   try {
     const subscriptionsService = new SubscriptionsService();

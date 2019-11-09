@@ -72,6 +72,30 @@ class Subscriptions {
       valid: true
     };
   }
+
+  async getByToken(token) {
+    if (!token) {
+      throw new ApiError.unauthorized("No token found");
+    }
+
+    const subscriptionItem = await subscriptionsRepository.getByToken(token, {
+      approved: true
+    });
+
+    if (!subscriptionItem) {
+      throw new Error("No subscription found for token");
+    }
+
+    Logger.log.info("Found subscription:");
+    Logger.log.info(subscriptionItem);
+
+    return {
+      id: subscriptionItem.id,
+      status: subscriptionItem.status,
+      createdAt: subscriptionItem.createdAt,
+      updatedAt: subscriptionItem.updatedAt
+    };
+  }
 }
 
 module.exports = Subscriptions;

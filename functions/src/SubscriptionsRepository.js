@@ -58,7 +58,8 @@ class SubscriptionsRepository {
     let queryRef = subscriptionsRef.where("token", "==", token);
 
     if (options && options.approved === true) {
-      queryRef.where("status", "==", STATUS.APPROVED);
+      Logger.log.info("Filtering subscription for approved tokens");
+      queryRef = queryRef.where("status", "==", STATUS.APPROVED);
     }
 
     const snapshot = await queryRef.limit(1).get();
@@ -71,8 +72,7 @@ class SubscriptionsRepository {
     let subscriptionSnapshot = {};
     snapshot.forEach(doc => {
       Logger.log.info(`${doc.id} - ${JSON.stringify(doc.data())}`);
-      subscriptionSnapshot.id = doc.id;
-      subscriptionSnapshot.data = doc.data();
+      subscriptionSnapshot = doc.data();
     });
 
     return subscriptionSnapshot;
