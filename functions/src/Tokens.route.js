@@ -7,6 +7,7 @@ const cors = require("cors");
 const HttpResponse = require("boom");
 
 const TokensService = require("./Tokens.service");
+const SubscriptionsService = require("./Subscriptions.service");
 const LoggerService = require("./Utils/Logger");
 const Logger = new LoggerService();
 
@@ -38,6 +39,33 @@ app.post("/", async (req, res) => {
     return res
       .status(500)
       .json(HttpResponse.notImplemented("Unable to create token"));
+  }
+});
+
+app.post("/notifications", async (req, res) => {
+  Logger.log.info("Trigger notification for subscription");
+  try {
+    const subscriptionsService = new SubscriptionsService();
+
+    let token = "";
+    token = req.get("authorization");
+    if (!token) {
+      throw HttpResponse.unauthorized("No token found");
+    }
+
+    await subscriptionsService.triggerSubscriptionNotification(token);
+
+    return res.status(200).json({
+      statusCode: 200,
+      data: {
+        success: true
+      }
+    });
+  } catch (error) {
+    Logger.log.info(error.message);
+    return res
+      .status(500)
+      .json(HttpResponse.notImplemented("Unable to trigger notifications"));
   }
 });
 
