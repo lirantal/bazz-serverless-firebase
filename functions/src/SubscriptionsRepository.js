@@ -17,6 +17,48 @@ const STATUS = {
 
 class SubscriptionsRepository {
   /**
+   * saves a browser's push notification subscription
+   *
+   * first we query the table to see if the subscription request is valid
+   * based on its generated subscription id and nonce
+   * and then we update it
+   *
+   * @param {*} subscriptionRequest
+   */
+  static async updateSubscription(subscriptionRequest) {
+    Logger.log.info("Updating subscription");
+    const subscriptionRef = db.collection("subscriptions");
+    let queryRef = subscriptionRef.doc(subscriptionRequest.sub_id);
+    const item = await queryRef.get();
+
+    if (!item.exists) {
+      throw new Error("Malformed query response");
+    }
+
+    const itemData = item.data();
+    if (
+      itemData.status !== STATUS.NEW ||
+      itemData.nonce !== subscriptionRequest.nonce ||
+      itemData.id !== subscriptionRequest.sub_id
+    ) {
+      throw new Error("Incorrect subscription retrieved");
+    }
+
+    const subscriptionUpdateRef = db.collection("subscriptions");
+    let queryUpdateRef = subscriptionUpdateRef.doc(subscriptionRequest.sub_id);
+
+    await queryUpdateRef.set(
+      {
+        subscription: subscriptionRequest.subscription,
+        updatedAt: new Date().toISOString()
+      },
+      { merge: true }
+    );
+
+    return true;
+  }
+
+  /**
    * let a token confirm its subscription is ready to be used
    * @param {*} subscription
    */

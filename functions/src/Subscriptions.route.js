@@ -14,37 +14,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 
-app.post("/:id/confirmations", async (req, res) => {
-  try {
-    const subscriptionsService = new SubscriptionsService();
-
-    let data = {};
-    try {
-      data = {
-        token: req.get("authorization"),
-        sub_id: req.params.id,
-        nonce: req.query["nonce"]
-      };
-    } catch (error) {
-      throw HttpResponse.badRequest("Missing or incorrect data");
-    }
-
-    const subscriptionConfirmedStatus = await subscriptionsService.confirmSubscription(
-      data
-    );
-
-    if (subscriptionConfirmedStatus !== true) {
-      throw new Error("Unable to confirm subscription");
-    }
-
-    return res.status(200).json();
-  } catch (error) {
-    // @TODO error message
-    Logger.log.info(error);
-    return res.status(500).json(HttpResponse.badImplementation(error));
-  }
-});
-
 app.get("/", async (req, res) => {
   try {
     const subscriptionsService = new SubscriptionsService();
@@ -62,6 +31,64 @@ app.get("/", async (req, res) => {
     };
 
     return res.status(200).json(responseData);
+  } catch (error) {
+    // @TODO error message
+    Logger.log.info(error);
+    return res.status(500).json(HttpResponse.badImplementation(error));
+  }
+});
+
+app.post("/", async (req, res) => {
+  try {
+    const subscriptionsService = new SubscriptionsService();
+
+    Logger.log.info("Creating a subscription from the request payload:");
+    Logger.log.info(req.body);
+    await subscriptionsService.create(req.body);
+
+    return res.status(201).json({
+      statusCode: 201,
+      data: {
+        success: true
+      }
+    });
+  } catch (error) {
+    // @TODO error message
+    Logger.log.info(error);
+    return res.status(500).json(HttpResponse.badImplementation(error));
+  }
+});
+
+app.post("/:id/confirmations", async (req, res) => {
+  Logger.log.info("Confirming subscription");
+  try {
+    const subscriptionsService = new SubscriptionsService();
+
+    let data = {};
+    try {
+      data = {
+        token: req.get("authorization"),
+        sub_id: req.params.id,
+        nonce: req.body.nonce
+      };
+    } catch (error) {
+      throw HttpResponse.badRequest("Missing or incorrect data");
+    }
+
+    const subscriptionConfirmedStatus = await subscriptionsService.confirmSubscription(
+      data
+    );
+
+    if (subscriptionConfirmedStatus !== true) {
+      throw new Error("Unable to confirm subscription");
+    }
+
+    return res.status(200).json({
+      statusCode: 200,
+      data: {
+        success: true
+      }
+    });
   } catch (error) {
     // @TODO error message
     Logger.log.info(error);

@@ -28,12 +28,13 @@ class Subscriptions {
 
     // A valid subscription object should at least has a URL endpoint defined
     const subscriptionObject = data && data.subscription;
+    data.id = data.id ? data.id : data.sub_id;
     if (
       !subscriptionObject ||
       !subscriptionObject.endpoint ||
       !subscriptionObject.endpoint.length ||
       !subscriptionObject.keys ||
-      !data.sub_id ||
+      !data.id ||
       !data.nonce ||
       typeof subscriptionObject.endpoint !== "string"
     ) {
@@ -113,6 +114,81 @@ class Subscriptions {
     }
 
     return true;
+  }
+
+  async create(data) {
+    const isSubscriptionValid = await this.isValid(data);
+    if (!isSubscriptionValid) {
+      throw new Error("Subscription not found");
+    }
+
+    const subscriptionItem = {
+      subscription: {
+        endpoint: String(data.subscription.endpoint),
+        keys: data.subscription.keys
+      },
+      sub_id: String(data.sub_id),
+      nonce: String(data.nonce)
+    };
+
+    await subscriptionsRepository.updateSubscription(subscriptionItem);
+    return true;
+  }
+
+  updateSubscriptionNotified(sub) {
+    return subscriptionsRepository.setSubscriptionNotified(sub);
+  }
+
+  triggerPushMsg(subscription) {
+    return webpush.sendNotification(subscription);
+  }
+
+  async triggerSubscriptionNotification(token) {
+    if (!token) {
+      throw new Error("No token found");
+    }
+
+    const subscriptionItem = await subscriptionsRepository.getByToken(token, {
+      approved: true
+    });
+
+    Logger.log.info("Retrieved subscription by token");
+    Logger.log.info(subscriptionItem);
+
+    // @FIXME also consider if we actually want to limit it? or just
+    // to have a flag whether it was ever notified or not
+    if (
+      subscriptionItem &&
+      subscriptionItem.notified &&
+      subscriptionItem.notified === true
+    ) {
+      throw new Error("Subscription token already notified");
+    }
+
+    if (!subscriptionItem.subscription.endpoint) {
+      throw new Error("Malformed subscription object");
+    }
+
+    Logger.log.info("Triggering push notification for subscription:");
+    Logger.log.info(subscriptionItem);
+    await this.triggerPushMsg(subscriptionItem.subscription);
+
+    // @TODO
+    // Logger.log.info("update subscription notification as notified");
+    // await this.updateSubscriptionNotified(subscriptionItem);
+  }
+
+  async setSubscriptionNotified(subscription) {
+    const subscriptionRef = db.collection("subscriptions");
+    const queryRef = subscriptionRef.doc(subscription.id);
+
+    await queryRef.set(
+      {
+        notified: true,
+        updatedAt: new Date().toISOString()
+      },
+      { merge: true }
+    );
   }
 }
 
