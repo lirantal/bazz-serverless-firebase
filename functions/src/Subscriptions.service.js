@@ -173,9 +173,8 @@ class Subscriptions {
     Logger.log.info(subscriptionItem);
     await this.triggerPushMsg(subscriptionItem.subscription);
 
-    // @TODO
-    // Logger.log.info("update subscription notification as notified");
-    // await this.updateSubscriptionNotified(subscriptionItem);
+    Logger.log.info("Update subscription notification as notified");
+    await this.updateSubscriptionNotified(subscriptionItem);
   }
 
   async setSubscriptionNotified(subscription) {

@@ -58,6 +58,21 @@ class SubscriptionsRepository {
     return true;
   }
 
+  static async setSubscriptionNotified(subscription) {
+    const subscriptionRef = db.collection("subscriptions");
+    const queryRef = subscriptionRef.doc(subscription.id);
+
+    await queryRef.set(
+      {
+        notified: true,
+        updatedAt: new Date().toISOString()
+      },
+      { merge: true }
+    );
+
+    return true;
+  }
+
   /**
    * let a token confirm its subscription is ready to be used
    * @param {*} subscription
