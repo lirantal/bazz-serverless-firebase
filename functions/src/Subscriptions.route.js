@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: true }));
 
-app.get("/", async (req, res) => {
+app.get("/api/subscriptions", async (req, res) => {
   try {
     const subscriptionsService = new SubscriptionsService();
 
@@ -38,7 +38,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.post("/", async (req, res) => {
+app.post("/api/subscriptions", async (req, res) => {
   try {
     const subscriptionsService = new SubscriptionsService();
 
@@ -59,7 +59,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.post("/:id/confirmations", async (req, res) => {
+app.post("/api/subscriptions/:id/confirmations", async (req, res) => {
   Logger.log.info("Confirming subscription");
   try {
     const subscriptionsService = new SubscriptionsService();
@@ -96,7 +96,7 @@ app.post("/:id/confirmations", async (req, res) => {
   }
 });
 
-app.get("/pending", async (req, res) => {
+app.get("/api/subscriptions/pending", async (req, res) => {
   try {
     const subscriptionsService = new SubscriptionsService();
 

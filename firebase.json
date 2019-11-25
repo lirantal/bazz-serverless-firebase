@@ -2,10 +2,14 @@
   "hosting": {
     "rewrites": [
       {
-        "source": "/api/tokens/**",
+        "source": "/api/tokens{,/**}",
         "function": "tokens"
+      },
+      {
+        "source": "/api/subscriptions{,/**}",
+        "function": "subscriptions"
       }
     ],
-    "public": "public"
+    "public": "build"
   }
 }

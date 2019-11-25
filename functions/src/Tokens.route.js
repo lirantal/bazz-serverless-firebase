@@ -18,7 +18,7 @@ app.use(cors({ origin: true }));
 /**
  * Semi-Signup - Creates a token for the user
  */
-app.post("/", async (req, res) => {
+app.post("/api/tokens", async (req, res) => {
   try {
     const tokenService = new TokensService();
     const subscription = await tokenService.create();
@@ -42,7 +42,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.post("/notifications", async (req, res) => {
+app.post("/api/tokens/notifications", async (req, res) => {
   Logger.log.info("Trigger notification for subscription");
   try {
     const subscriptionsService = new SubscriptionsService();
