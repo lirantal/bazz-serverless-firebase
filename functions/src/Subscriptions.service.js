@@ -1,5 +1,6 @@
 "use strict";
 
+const functions = require("firebase-functions");
 const subscriptionsRepository = require("./SubscriptionsRepository");
 const webpush = require("web-push");
 const LoggerService = require("./Utils/Logger");
@@ -8,8 +9,11 @@ const Logger = new LoggerService();
 class Subscriptions {
   constructor() {
     const vapidKeys = {
-      publicKey: process.env.WEB_PUSH_PUBKEY,
-      privateKey: process.env.WEB_PUSH_PRVKEY
+      publicKey:
+        process.env.WEB_PUSH_PUBKEY ||
+        functions.config().bazz.prod.vapid.pubkey,
+      privateKey:
+        process.env.WEB_PUSH_PRVKEY || functions.config().bazz.prod.vapid.prvkey
     };
 
     webpush.setVapidDetails(
