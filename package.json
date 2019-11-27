@@ -1,0 +1,25 @@
+{
+  "name": "bazz-frontend",
+  "version": "0.1.0",
+  "dependencies": {
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-scripts": "1.0.17",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.77.0"
+  },
+  "scripts": {
+    "//start": "react-scripts build && cra-append-sw --skip-compile --mode dev ./custom-sw.js",
+    "build": "react-scripts build && cra-append-sw --skip-compile ./custom-sw.js",
+    "start": "react-scripts start",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3000",
+  "devDependencies": {
+    "cra-append-sw": "^2.0.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "react-test-renderer": "^16.2.0"
+  }
+}
