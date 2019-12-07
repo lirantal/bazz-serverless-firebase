@@ -161,13 +161,13 @@ class Subscriptions {
 
     // @FIXME also consider if we actually want to limit it? or just
     // to have a flag whether it was ever notified or not
-    if (
-      subscriptionItem &&
-      subscriptionItem.notified &&
-      subscriptionItem.notified === true
-    ) {
-      throw new Error("Subscription token already notified");
-    }
+    // if (
+    //   subscriptionItem &&
+    //   subscriptionItem.notified &&
+    //   subscriptionItem.notified === true
+    // ) {
+    //   throw new Error("Subscription token already notified");
+    // }
 
     if (!subscriptionItem.subscription.endpoint) {
       throw new Error("Malformed subscription object");
