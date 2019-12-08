@@ -15,7 +15,7 @@
     "boom": "^7.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "firebase-admin": "^8.6.0",
+    "firebase-admin": "^8.8.0",
     "firebase-functions": "^3.3.0",
     "pino": "^5.13.5",
     "uuid": "^3.3.3",
