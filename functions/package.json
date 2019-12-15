@@ -19,7 +19,7 @@
     "firebase-functions": "^3.3.0",
     "pino": "^5.14.0",
     "uuid": "^3.3.3",
-    "web-push": "^3.4.2"
+    "web-push": "^3.4.3"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.1.6"
