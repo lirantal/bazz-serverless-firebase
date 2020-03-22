@@ -17,7 +17,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^8.9.2",
     "firebase-functions": "^3.3.0",
-    "pino": "^5.16.0",
+    "pino": "^5.17.0",
     "uuid": "^3.4.0",
     "web-push": "^3.4.3"
   },
