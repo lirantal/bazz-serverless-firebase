@@ -2,11 +2,11 @@
   "name": "bazz-frontend",
   "version": "0.1.0",
   "dependencies": {
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
-    "react-scripts": "3.3.0",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "react-scripts": "5.0.0",
     "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.77.0"
+    "semantic-ui-react": "^0.81.2"
   },
   "scripts": {
     "//start": "react-scripts build && cra-append-sw --skip-compile --mode dev ./custom-sw.js",
