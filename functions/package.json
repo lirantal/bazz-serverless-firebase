@@ -14,7 +14,7 @@
   "dependencies": {
     "boom": "^7.3.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
     "firebase-admin": "^9.4.2",
     "firebase-functions": "^3.3.0",
     "pino": "^5.16.0",
