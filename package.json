@@ -4,7 +4,7 @@
   "dependencies": {
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "react-scripts": "3.3.0",
+    "react-scripts": "4.0.0",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.0"
   },
